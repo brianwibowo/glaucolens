@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Monitoring Pasien - GlaucoLens</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="icon" href="assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+
+    <!-- Fonts and icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"],
+            },
+            active: function () {
+                // sessionStorage.fonts = true; // Removed localStorage usage
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #74b9ff;
+            --danger-color: #fd79a8;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --dark-color: #2d3436;
+            --light-color: #f8f9fa;
+            --info-color: #0984e3;
+        }
+
+        body {
+            font-family: "Public Sans", sans-serif;
+            background-color: #f1f2f6;
+        }
+
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo h3 {
+            color: white;
+            margin: 0;
+            font-weight: 600;
+            font-size: 24px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            margin: 5px 15px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .main-panel {
+            flex: 1;
+            margin-left: 250px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .main-panel.expanded {
+            margin-left: 70px;
+        }
+
+        .main-header {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-header h1 {
+            color: var(--dark-color);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .page-title {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title h2 {
+            color: var(--dark-color);
+            margin: 0;
+            font-weight: 600;
+            font-size: 2rem;
+        }
+
+        .page-title p {
+            color: #666;
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+        }
+
+        .monitoring-table {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .table-header h3 {
+            color: var(--dark-color);
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .filter-btn {
+            background: var(--light-color);
+            border: 1px solid #ddd;
+            color: var(--dark-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .patients-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .patients-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark-color);
+            border-bottom: 2px solid #dee2e6;
+            font-size: 0.9rem;
+        }
+
+        .patients-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #f1f2f6;
+            vertical-align: middle;
+        }
+
+        .patients-table tr:hover {
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .patient-number {
+            width: 35px;
+            height: 35px;
+            background: var(--light-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 14px;
+        }
+
+        .patient-name {
+            font-weight: 500;
+            color: var(--dark-color);
+            font-size: 1rem;
+        }
+
+        .patient-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            cursor: default;
+        }
+
+        .status-selesai {
+            background: rgba(0, 184, 148, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-normal {
+            background: rgba(0, 184, 148, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-tindakan {
+            background: rgba(116, 185, 255, 0.1);
+            color: var(--info-color);
+        }
+
+        .status-awal {
+            background: rgba(116, 185, 255, 0.1);
+            color: var(--info-color);
+        }
+
+        .status-obat {
+            background: rgba(116, 185, 255, 0.1);
+            color: var(--info-color);
+        }
+
+        .status-pemeriksaan {
+            background: rgba(116, 185, 255, 0.1);
+            color: var(--info-color);
+        }
+
+        .status-belum {
+            background: rgba(253, 121, 168, 0.1);
+            color: var(--danger-color);
+        }
+
+        .action-btn {
+            background: rgba(116, 185, 255, 0.1);
+            color: var(--info-color);
+            border: 1px solid rgba(116, 185, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            background: var(--info-color);
+            color: white;
+            border-color: var(--info-color);
+            transform: translateY(-1px);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .pagination-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            color: var(--dark-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .pagination-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .notification-badge {
+            position: relative;
+        }
+
+        .notification-badge::after {
+            content: '4';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-panel {
+                margin-left: 0;
+            }
+
+            .patients-table {
+                font-size: 0.8rem;
+            }
+
+            .patients-table th,
+            .patients-table td {
+                padding: 10px 8px;
+            }
+
+            .patient-name {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <button class="toggle-sidebar" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>GlaucoLens</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="monitoring.html" class="nav-link active">
+                            <i class="fas fa-users"></i>
+                            <span>Monitoring Pasien</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="logout-button-wrapper">
+                        <button onclick="location.href='login.html'" id="logout-button"
+                            class="btn btn-danger w-100 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-sign-out-alt me-2"></i> <span>Logout</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Panel -->
+        <div class="main-panel" id="mainPanel">
+            <!-- Header -->
+            <div class="main-header">
+                <h1>Monitoring Pasien</h1>
+                <div class="user-info">
+                    <div class="notification-badge">
+                        <i class="fas fa-bell" style="color: #666; font-size: 18px;"></i>
+                    </div>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--dark-color);">dr. Abdul</div>
+                        <div style="font-size: 12px; color: #666;">Ophthalmologist</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="container">
+                <!-- Page Title -->
+                <div class="page-title">
+                    <h2>Monitoring Pasien Rujukan RS JEC</h2>
+                    <p>Kelola dan pantau data pasien yang dirujuk dari pemeriksaan glaukoma</p>
+                </div>
+
+                <!-- Monitoring Table -->
+                <div class="monitoring-table">
+                    <div class="table-header">
+                        <h3>Daftar Pasien</h3>
+                    </div>
+
+                    <table class="patients-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Pasien</th>
+                                <th>Tanggal Rujukan</th>
+                                <th>Status Medis</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientsTableBody">
+                            <tr>
+                                <td>
+                                    <div class="patient-number">01</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Raden Adjeng Aristawidya Damayanti</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">10-07-2024</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-selesai">Selesai Diperiksa</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">02</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Deyndrawan Sutrisno</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">12-07-2024</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-normal">Tidak Glaukoma - Normal</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">03</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">I Gede Bagus Jayendra</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">14-08-2024</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-tindakan">Tindakan Lanjutan</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">04</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Apriansyah Wibowo</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">12-09-2024</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-awal">Terapi Awal</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">05</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Jihan Nafihanan</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">19-01-2025</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-awal">Terapi Awal</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">06</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Kaisar Akhmad Khan</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">09-02-2025</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-obat">Diberikan Obat</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">07</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Farhan Kebab</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">25-02-2025</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-pemeriksaan">Pemeriksaan Sedang Dilakukan</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">08</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Sultan Melvin Wibowo</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">15-03-2025</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-belum">Belum Diperiksa</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">09</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Usman Gultom</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">18-04-2025</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-belum">Belum Diperiksa</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="patient-number">10</div>
+                                </td>
+                                <td>
+                                    <div class="patient-name">Geraldo Virasakti</div>
+                                </td>
+                                <td>
+                                    <div class="patient-date">12-05-2025</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-belum">Belum Diperiksa</span>
+                                </td>
+                                <td>
+                                    <a href="data_pasien.pdf" class="action-btn" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="pagination-btn" onclick="previousPage()" id="prevBtn">
+                            <i class="fas fa-chevron-left"></i> Prev
+                        </button>
+                        <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+                        <button class="pagination-btn" onclick="goToPage(2)">2</button>
+                        <button class="pagination-btn" onclick="goToPage(3)">3</button>
+                        <button class="pagination-btn" onclick="goToPage(4)">4</button>
+                        <button class="pagination-btn" onclick="goToPage(5)">5</button>
+                        <span style="margin: 0 10px; color: #666;">...</span>
+                        <button class="pagination-btn" onclick="goToPage(10)">10</button>
+                        <button class="pagination-btn" onclick="goToPage(11)">11</button>
+                        <button class="pagination-btn" onclick="nextPage()" id="nextBtn">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 11;
+
+        // Toggle sidebar functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const links = sidebar.querySelectorAll('.nav-link span');
+            const logo = sidebar.querySelector('.sidebar-logo h3');
+            const mainPanel = document.getElementById('mainPanel');
+            const logoutBtn = document.getElementById('logout-button');
+            const logoutText = logoutBtn.querySelector('span');
+
+            sidebar.classList.toggle('collapsed');
+            mainPanel.classList.toggle('expanded');
+
+            links.forEach(span => span.style.display = sidebar.classList.contains('collapsed') ? 'none' : 'inline');
+            logo.style.display = sidebar.classList.contains('collapsed') ? 'none' : 'block';
+
+            if (sidebar.classList.contains('collapsed')) {
+                logoutBtn.classList.remove('w-100');
+                logoutBtn.classList.add('btn-icon-only', 'rounded-circle');
+                logoutText.style.display = 'none';
+            } else {
+                logoutBtn.classList.add('w-100');
+                logoutBtn.classList.remove('btn-icon-only', 'rounded-circle');
+                logoutText.style.display = 'inline';
+            }
+        }
+        // Filter functionality
+        function toggleFilter() {
+            // Simple filter implementation
+            const filterBtn = document.querySelector('.filter-btn');
+            filterBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            setTimeout(() => {
+                filterBtn.innerHTML = '<i class="fas fa-filter"></i>';
+                alert('Filter functionality can be implemented here');
+            }, 1000);
+        }
+
+        // Pagination functionality
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            updatePagination();
+        }
+
+        function updatePagination() {
+            // Update active button
+            document.querySelectorAll('.pagination-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Find and activate current page button
+            const pageButtons = document.querySelectorAll('.pagination-btn');
+            pageButtons.forEach(btn => {
+                if (btn.textContent == currentPage) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update prev/next button states
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+
+            // Simulate loading new data
+            const tableBody = document.getElementById('patientsTableBody');
+            tableBody.style.opacity = '0.5';
+
+            setTimeout(() => {
+                tableBody.style.opacity = '1';
+                // Here you could load new data for the current page
+            }, 300);
+        }
+
+        // Add hover effects and interactions
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add hover effect to table rows
+            const tableRows = document.querySelectorAll('.patients-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateX(5px)';
+                });
+
+                row.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+
+            // Add click effect to action buttons
+            const actionButtons = document.querySelectorAll('.action-btn');
+            actionButtons.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    // Add ripple effect
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // Initialize pagination
+            updatePagination();
+        });
+
+        // Mobile responsive functionality
+        window.addEventListener('resize', function () {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const mainPanel = document.getElementById('mainPanel');
+                sidebar.classList.remove('collapsed');
+                mainPanel.classList.remove('expanded');
+            }
+        });
+
+        // Search functionality (can be added later)
+        function searchPatients() {
+            // Implementation for search functionality
+            console.log('Search functionality can be implemented here');
+        }
+    </script>
+</body>
+
+</html>

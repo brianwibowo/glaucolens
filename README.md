@@ -1,64 +1,61 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Kaiadmin Lite - Free Bootstrap 5 Admin Dashboard
+![kaiadminlitethumb (1)](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/4793c6b9-7991-4502-8633-14d9ed0ea486)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This time, I want to introduce you Kaiadmin Lite – a free Bootstrap 5 Admin Dashboard built to easily manage and visualize business data.
 
-## About Laravel
+With Kaiadmin Lite, you can complete development faster with no design skills required. Save 1000s of hours of designing and coding work, as we've already done that for you.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Don't worry about getting started – we've documented how to get started using this dashboard template and utilizing the available components and plugins, making it easy to leverage the full potential of Kaiadmin Bootstrap 5 Admin Dashboard.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Product Detail** : https://themekita.com/kaiadmin-lite-bootstrap-5-dashboard.html
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Live Preview** : https://themekita.com/demo-kaiadmin-lite-bootstrap-dashboard/livepreview/demo1/
 
-## Learning Laravel
+# Get Kaiadmin PRO
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+![bg_themekitacom](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/195bfcb3-f587-4920-bfba-a583244116ad)
+[Product Detail](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/) |  [Buy This](https://themekita.lemonsqueezy.com/buy/526b603e-8eb3-4dcb-a7a3-842375952df5)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+***
+### [Kaiadmin - Classic Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo1/)
+![Kaiadmin - Classic Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/106e027a-4ffe-4856-b729-0e6939c0473d)
 
-## Laravel Sponsors
+***
+### [Kaiadmin - White Classic Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo2/)
+![Kaiadmin - White Classic Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/ab70a0f7-116d-46ad-9037-a4081b0db763)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+***
+### [Kaiadmin - Dark Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo3/)
+![Kaiadmin - Dark Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/1a645dc4-d150-45d7-9883-1955b0666d18)
 
-### Premium Partners
+***
+### [Kaiadmin - Creative Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo4/)
+![Kaiadmin - Creative Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/fccc0204-3cb7-45dd-b0a5-532c57af3c12)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+***
+### [Kaiadmin - Trendy Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo5/)
+![Kaiadmin - Trendy Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/bd9d4ce8-08a3-48bd-975e-3d77e5c51388)
 
-## Contributing
+***
+### [Kaiadmin - Trendy 2 Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo6/)
+![Kaiadmin - Trendy 2 Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/3cdd531f-16e0-4c4e-bfbd-89f80d3a25fe)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+***
+### [Kaiadmin - Horizontal Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo7/)
+![Kaiadmin - Horizontal Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/2cac93cc-2542-43d9-9072-8625bdd2f8ad)
 
-## Code of Conduct
+***
+### [Kaiadmin - Enterprise Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo8/)
+![Kaiadmin - Enterprise Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/ce2aa3f8-1f62-4ca1-87cd-111b74e50940)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+***
+### [Kaiadmin - Futuristic Dashboard](https://themekita.com/demo-kaiadmin-pro-bootstrap-dashboard/livepreview/examples/demo9/)
+![Kaiadmin - Futuristic Dashboard](https://github.com/Hizrian/kaiadmin-lite/assets/10692084/83f79f3d-d248-4d01-ac15-9c98bee3ca9f)
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+

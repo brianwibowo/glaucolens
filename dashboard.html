@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>GlaucoLens</title>
+  <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+  <link rel="icon" href="assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+
+  <!-- Fonts and icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+  <script>
+    WebFont.load({
+      google: { families: ["Public Sans:300,400,500,600,700"] },
+      custom: {
+        families: [
+          "Font Awesome 5 Solid",
+          "Font Awesome 5 Regular",
+          "Font Awesome 5 Brands",
+          "simple-line-icons",
+        ],
+        urls: ["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"],
+      },
+      active: function () {
+        // sessionStorage.fonts = true; // Removed localStorage usage
+      },
+    });
+  </script>
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary-color: #6c5ce7;
+      --secondary-color: #74b9ff;
+      --danger-color: #fd79a8;
+      --success-color: #00b894;
+      --warning-color: #fdcb6e;
+      --dark-color: #2d3436;
+      --light-color: #f8f9fa;
+    }
+
+    body {
+      font-family: "Public Sans", sans-serif;
+      background-color: #f1f2f6;
+    }
+
+    .wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar.collapsed {
+      width: 70px;
+    }
+
+    .sidebar-logo {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-logo h3 {
+      color: white;
+      margin: 0;
+      font-weight: 600;
+      font-size: 24px;
+    }
+
+    .sidebar-nav {
+      padding: 20px 0;
+    }
+
+    .nav-item {
+      margin: 5px 15px;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+    }
+
+    .main-panel {
+      flex: 1;
+      margin-left: 250px;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+
+    .main-panel.expanded {
+      margin-left: 70px;
+    }
+
+    .main-header {
+      background: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .main-header h1 {
+      color: var(--dark-color);
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .device-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .device-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .device-card h2 {
+      color: var(--dark-color);
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 2.5rem;
+    }
+
+    .device-card p {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .device-image {
+      width: 200px;
+      height: 150px;
+      background: linear-gradient(135deg, #333 0%, #555 100%);
+      border-radius: 15px;
+      margin: 30px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .device-image i {
+      font-size: 60px;
+      color: white;
+    }
+
+    .calibrate-btn {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    .calibrate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    }
+
+    .monitoring-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .monitoring-card h3 {
+      color: var(--dark-color);
+      margin-bottom: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .patient-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .patient-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+
+    .patient-item:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+    }
+
+    .patient-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .patient-number {
+      width: 30px;
+      height: 30px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .patient-name {
+      font-weight: 500;
+      color: var(--dark-color);
+    }
+
+    .view-btn {
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .view-btn:hover {
+      background: #0984e3;
+      transform: scale(1.05);
+    }
+
+    .news-section {
+      margin-top: 40px;
+    }
+
+    .news-section h2 {
+      color: var(--dark-color);
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 2rem;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .news-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .news-image {
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .news-image i {
+      font-size: 40px;
+      color: white;
+    }
+
+    .news-content {
+      padding: 20px;
+    }
+
+    .news-title {
+      color: var(--dark-color);
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .news-link {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .news-link:hover {
+      color: var(--primary-color);
+    }
+
+    .toggle-sidebar {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .notification-badge {
+      position: relative;
+    }
+
+    .notification-badge::after {
+      content: '4';
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--danger-color);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.show {
+        transform: translateX(0);
+      }
+
+      .main-panel {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <button class="toggle-sidebar" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h3>GlaucoLens</h3>
+      </div>
+      <nav class="sidebar-nav">
+        <ul class="nav">
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="monitoring.html" class="nav-link">
+              <i class="fas fa-users"></i>
+              <span>Monitoring Pasien</span>
+            </a>
+          </li>
+          <li class="nav-item" id="logout-button-wrapper">
+            <button onclick="location.href='login.html'" id="logout-button"
+              class="btn btn-danger w-100 d-flex align-items-center justify-content-center">
+              <i class="fas fa-sign-out-alt me-2"></i> <span>Logout</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Main Panel -->
+    <div class="main-panel" id="mainPanel">
+      <!-- Header -->
+      <div class="main-header">
+        <h1>Dashboard</h1>
+        <div class="user-info">
+          <div class="notification-badge">
+            <i class="fas fa-bell" style="color: #666; font-size: 18px;"></i>
+          </div>
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <div style="font-weight: 600; color: var(--dark-color);">dr. Abdul</div>
+            <div style="font-size: 12px; color: #666;">Ophthalmologist</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="container">
+        <div class="row">
+          <!-- Device Card -->
+          <div class="col-md-8 d-flex">
+            <div class="device-card flex-fill d-flex flex-column justify-content-between">
+              <h2>GlaucoLens</h2>
+              <p>Alat Portabel Deteksi Glaukoma Berbasis Kecerdasan Buatan</p>
+              <div class="device-image">
+                <i class="fas fa-camera"></i>
+              </div>
+              <button class="calibrate-btn" onclick="calibrateDevice()">Calibrate</button>
+            </div>
+          </div>
+
+          <!-- Monitoring Card -->
+          <div class="col-md-4 d-flex">
+            <div class="monitoring-card flex-fill d-flex flex-column">
+              <h3>
+                <i class="fas fa-users"></i>
+                Monitoring Pasien
+              </h3>
+              <ul class="patient-list" id="patientList">
+                <li class="patient-item">
+                  <div class="patient-info">
+                    <div class="patient-number">01</div>
+                    <div class="patient-name">Raden Adjeng Aristawidya Damayanti</div>
+                  </div>
+                  <button class="view-btn" onclick="window.open('data_pasien.pdf', '_blank')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </li>
+                <li class="patient-item">
+                  <div class="patient-info">
+                    <div class="patient-number">02</div>
+                    <div class="patient-name">Deyndrawan Sutrisno</div>
+                  </div>
+                  <button class="view-btn" onclick="window.open('data_pasien.pdf', '_blank')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </li>
+                <li class="patient-item">
+                  <div class="patient-info">
+                    <div class="patient-number">03</div>
+                    <div class="patient-name">I Gede Bagus Jayendra</div>
+                  </div>
+                  <button class="view-btn" onclick="window.open('data_pasien.pdf', '_blank')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </li>
+                <li class="patient-item">
+                  <div class="patient-info">
+                    <div class="patient-number">04</div>
+                    <div class="patient-name">Apriansyah Wibowo</div>
+                  </div>
+                  <button class="view-btn" onclick="window.open('data_pasien.pdf', '_blank')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </li>
+                <li class="patient-item">
+                  <div class="patient-info">
+                    <div class="patient-number">05</div>
+                    <div class="patient-name">Jihan Nafihanan</div>
+                  </div>
+                  <button class="view-btn" onclick="window.open('data_pasien.pdf', '_blank')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- News Section -->
+        <div class="news-section">
+          <h2>Hot News About Glaucoma</h2>
+          <div class="news-grid">
+            <div class="news-card">
+              <div class="news-image">
+                <img src="assets/img/glaucoma.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div class="news-content">
+                <h4 class="news-title">What is Glaucoma?</h4>
+                <a href="https://www.aao.org/eye-health/diseases/what-is-glaucoma" class="news-link">Read More</a>
+              </div>
+            </div>
+            <div class="news-card">
+              <div class="news-image">
+                <img src="assets/img/glaugy.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div class="news-content">
+                <h4 class="news-title">Glaucoma Pathophysiology</h4>
+                <a href="https://www.msdmanuals.com/professional/eye-disorders/glaucoma/overview-of-glaucoma"
+                  class="news-link">Read More</a>
+              </div>
+            </div>
+            <div class="news-card">
+              <div class="news-image">
+                <img src="assets/img/causes.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div class="news-content">
+                <h4 class="news-title">Glaucoma Causes</h4>
+                <a href="https://www.mayoclinic.org/diseases-conditions/glaucoma/symptoms-causes/syc-20372839"
+                  class="news-link">Read More</a>
+              </div>
+            </div>
+            <div class="news-card">
+              <div class="news-image">
+                <img src="assets/img/open.jpeg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div class="news-content">
+                <h4 class="news-title">What is Open-Angle Glaucoma?</h4>
+                <a href="https://my.clevelandclinic.org/health/diseases/open-angle-glaucoma" class="news-link">Read
+                  More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle sidebar functionality
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const links = sidebar.querySelectorAll('.nav-link span');
+      const logo = sidebar.querySelector('.sidebar-logo h3');
+      const mainPanel = document.getElementById('mainPanel');
+      const logoutBtn = document.getElementById('logout-button');
+      const logoutText = logoutBtn.querySelector('span');
+
+      sidebar.classList.toggle('collapsed');
+      mainPanel.classList.toggle('expanded');
+
+      links.forEach(span => span.style.display = sidebar.classList.contains('collapsed') ? 'none' : 'inline');
+      logo.style.display = sidebar.classList.contains('collapsed') ? 'none' : 'block';
+
+      if (sidebar.classList.contains('collapsed')) {
+        logoutBtn.classList.remove('w-100');
+        logoutBtn.classList.add('btn-icon-only', 'rounded-circle');
+        logoutText.style.display = 'none';
+      } else {
+        logoutBtn.classList.add('w-100');
+        logoutBtn.classList.remove('btn-icon-only', 'rounded-circle');
+        logoutText.style.display = 'inline';
+      }
+    }
+
+    // Calibrate device function
+    function calibrateDevice() {
+      // Simulate calibration process
+      const btn = document.querySelector('.calibrate-btn');
+      const originalText = btn.innerHTML;
+
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calibrating...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-check"></i> Calibrated!';
+        btn.style.background = 'linear-gradient(135deg, #00b894 0%, #00a085 100%)';
+
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+          btn.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)';
+        }, 2000);
+      }, 3000);
+    }
+
+    // View patient function
+    function viewPatient(patientId) {
+      // Simulate patient view
+      alert(`Viewing patient #${patientId} details`);
+    }
+
+    // Add some interactive features
+    document.addEventListener('DOMContentLoaded', function () {
+      // Add hover effects to patient items
+      const patientItems = document.querySelectorAll('.patient-item');
+      patientItems.forEach(item => {
+        item.addEventListener('mouseenter', function () {
+          this.style.transform = 'translateX(10px)';
+        });
+
+        item.addEventListener('mouseleave', function () {
+          this.style.transform = 'translateX(0)';
+        });
+      });
+
+      // Add click effects to news cards
+      const newsCards = document.querySelectorAll('.news-card');
+      newsCards.forEach(card => {
+        card.addEventListener('click', function () {
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = 'scale(1)';
+          }, 100);
+        });
+      });
+
+      // Simulate real-time updates
+      setInterval(() => {
+        const badge = document.querySelector('.notification-badge::after');
+        // Could update notification count here
+      }, 30000);
+    });
+
+    // Mobile responsive sidebar
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('show');
+    }
+
+    // Add mobile toggle button for smaller screens
+    window.addEventListener('resize', function () {
+      if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('sidebar');
+        const mainPanel = document.getElementById('mainPanel');
+        sidebar.classList.remove('collapsed');
+        mainPanel.classList.remove('expanded');
+      }
+    });
+  </script>
+</body>
+
+</html>
